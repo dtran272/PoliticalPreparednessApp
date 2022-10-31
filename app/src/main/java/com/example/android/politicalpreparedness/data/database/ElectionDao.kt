@@ -1,10 +1,6 @@
-package com.example.android.politicalpreparedness.database
+package com.example.android.politicalpreparedness.data.database
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
-import com.example.android.politicalpreparedness.network.models.Election
 
 @Dao
 interface ElectionDao {
