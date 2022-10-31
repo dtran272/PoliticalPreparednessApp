@@ -10,9 +10,43 @@
         android:layout_height="match_parent"
         tools:context="com.example.android.politicalpreparedness.MainActivity">
 
-        <!-- TODO: Add Upcoming Election Recycler and Header -->
+        <TextView
+            android:id="@+id/upcomingElectionsLabel"
+            style="@style/HeaderLabel"
+            android:text="@string/upcoming_elections"
+            android:textSize="@dimen/header2_size"
+            app:layout_constraintBottom_toTopOf="@id/upcomingElectionsRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TODO: Add Saved Election Recycler and Header -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/upcomingElectionsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/savedElectionsLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/upcomingElectionsLabel" />
+
+        <TextView
+            android:id="@+id/savedElectionsLabel"
+            style="@style/HeaderLabel"
+            android:text="@string/saved_elections"
+            android:textSize="@dimen/header2_size"
+            app:layout_constraintBottom_toTopOf="@id/savedElectionsRecyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/upcomingElectionsRecyclerView" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/savedElectionsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/savedElectionsLabel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

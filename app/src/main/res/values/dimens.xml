@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Padding dimensions -->
     <dimen name="default_padding">8dp</dimen>
 
-    <!-- TODO: Add necessary dimension values -->s
+    <!-- Margin dimensions -->
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="small_margin">4dp</dimen>
+    <dimen name="medium_margin">12dp</dimen>
+    <dimen name="large_margin">16dp</dimen>
+
+    <!-- Text dimensions -->
+    <dimen name="header1_size">32sp</dimen>
+    <dimen name="header2_size">28sp</dimen>
+    <dimen name="header3_size">22sp</dimen>
 
 </resources>

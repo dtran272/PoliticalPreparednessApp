@@ -13,7 +13,6 @@ class ElectionsFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         //TODO: Add ViewModel values and create ViewModel
 
         //TODO: Add binding values
@@ -23,7 +22,7 @@ class ElectionsFragment: Fragment() {
         //TODO: Initiate recycler adapters
 
         //TODO: Populate recycler adapters
-
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     //TODO: Refresh adapters when fragment loads
