@@ -16,6 +16,9 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        // Add CIVIC_INFO_API_KEY to your local gradle.properties. If not, just replace by this directly: AIzaSyCU7-L7PCWF7SgCgPF0ie2TRvgwjSfE3bk
+        buildConfigField "String", "CIVIC_INFO_API_KEY", CIVIC_INFO_API_KEY
     }
     buildTypes {
         release {
