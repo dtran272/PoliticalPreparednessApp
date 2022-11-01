@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- TODO: Add node to connect Election ViewModel -->
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.android.politicalpreparedness.election.ElectionsViewModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -28,6 +34,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/upcomingElectionsLabel"
+            app:listElections="@{viewModel.upcomingElections}"
             tools:itemCount="4"
             tools:listItems="@layout/election_view_item" />
 
@@ -49,8 +56,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/savedElectionsLabel"
+            app:listElections="@{viewModel.savedElections}"
             tools:itemCount="2"
             tools:listItems="@layout/election_view_item" />
+
+        <ProgressBar
+            android:id="@+id/electionsLoading_wheel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            app:isLoading="@{viewModel.isLoading()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -1,16 +1,66 @@
 package com.example.android.politicalpreparedness.election
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.android.politicalpreparedness.data.ElectionsRepository
+import com.example.android.politicalpreparedness.data.network.models.Election
+import kotlinx.coroutines.launch
+import timber.log.Timber
 
-//TODO: Construct ViewModel and provide election datasource
-class ElectionsViewModel: ViewModel() {
+class ElectionsViewModel(private val electionsRepository: ElectionsRepository) : ViewModel() {
 
-    //TODO: Create live data val for upcoming elections
+    private val _upcomingElections = MutableLiveData<List<Election>>()
+    val upcomingElections: LiveData<List<Election>>
+        get() = _upcomingElections
 
-    //TODO: Create live data val for saved elections
+    private val _savedElections = MutableLiveData<List<Election>>()
+    val savedElections: LiveData<List<Election>>
+        get() = _savedElections
 
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
+    private val _navigateToSelectedElection = MutableLiveData<Election>()
+    val navigateToSelectedElection: LiveData<Election>
+        get() = _navigateToSelectedElection
+
+    private val _isLoading = MutableLiveData<Boolean>()
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
+    fun refreshElections() {
+        getUpcomingElections()
+        getSavedElections()
+    }
 
     //TODO: Create functions to navigate to saved or upcoming election voter info
+    fun displayVoterInfo(election: Election) {
+        _navigateToSelectedElection.value = election
+    }
 
+    fun displayVoterInfoDone() {
+        _navigateToSelectedElection.value = null
+    }
+
+    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
+    private fun getUpcomingElections() {
+        _isLoading.value = true
+
+        viewModelScope.launch {
+            try {
+                _upcomingElections.value = electionsRepository.getUpcomingElections()
+                _isLoading.value = false
+            } catch (e: Exception) {
+                Timber.e(e)
+            }
+        }
+    }
+
+    private fun getSavedElections() {
+        _isLoading.value = true
+
+        viewModelScope.launch {
+            _savedElections.value = electionsRepository.getSavedElections()
+            _isLoading.value = false
+        }
+    }
 }
