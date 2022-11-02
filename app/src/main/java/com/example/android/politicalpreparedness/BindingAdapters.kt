@@ -1,7 +1,6 @@
 package com.example.android.politicalpreparedness
 
 import android.view.View
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -18,14 +17,15 @@ fun bindElectionList(recyclerView: RecyclerView, electionData: List<Election>?) 
 }
 
 @BindingAdapter("dateFormatText")
-fun bindTextViewToDateFormat(textView: TextView, date: Date) {
+fun bindTextViewToDateFormat(textView: TextView, date: Date?) {
+    if (date == null) {
+        textView.visibility = View.GONE
+        return
+    }
+
     val formatter = SimpleDateFormat("EEE MMM dd yyyy @HH:mm:ss z")
     val formattedDate = formatter.format(date)
 
     textView.text = formattedDate
-}
-
-@BindingAdapter("isLoading")
-fun bindLoadingWheel(progressBar: ProgressBar, isLoading: Boolean) {
-    progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    textView.visibility = View.VISIBLE
 }

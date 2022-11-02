@@ -15,5 +15,6 @@
     <dimen name="header2_size">28sp</dimen>
     <dimen name="header3_size">22sp</dimen>
     <dimen name="header4_size">18sp</dimen>
+    <dimen name="header5_size">16sp</dimen>
 
 </resources>

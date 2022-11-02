@@ -37,9 +37,9 @@ class ElectionsFragment : Fragment() {
         })
 
         viewModel.navigateToSelectedElection.observe(viewLifecycleOwner) { election ->
-            election.let {
+            election?.let {
                 this.findNavController()
-                    .navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election.id, election.division))
+                    .navigate(ElectionsFragmentDirections.actionElectionsFragmentToVoterInfoFragment(election.id))
 
                 viewModel.displayVoterInfoDone()
             }

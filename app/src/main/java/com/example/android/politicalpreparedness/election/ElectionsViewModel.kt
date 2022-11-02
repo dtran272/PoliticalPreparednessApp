@@ -19,8 +19,8 @@ class ElectionsViewModel(private val electionsRepository: ElectionsRepository) :
     val savedElections: LiveData<List<Election>>
         get() = _savedElections
 
-    private val _navigateToSelectedElection = MutableLiveData<Election>()
-    val navigateToSelectedElection: LiveData<Election>
+    private val _navigateToSelectedElection = MutableLiveData<Election?>()
+    val navigateToSelectedElection: LiveData<Election?>
         get() = _navigateToSelectedElection
 
     private val _isLoading = MutableLiveData<Boolean>()
@@ -32,7 +32,6 @@ class ElectionsViewModel(private val electionsRepository: ElectionsRepository) :
         getSavedElections()
     }
 
-    //TODO: Create functions to navigate to saved or upcoming election voter info
     fun displayVoterInfo(election: Election) {
         _navigateToSelectedElection.value = election
     }

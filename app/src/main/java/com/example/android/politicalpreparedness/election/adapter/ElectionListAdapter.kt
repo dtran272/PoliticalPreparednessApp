@@ -1,6 +1,5 @@
 package com.example.android.politicalpreparedness.election.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -27,7 +26,7 @@ class ElectionListAdapter(private val clickListener: ElectionListener) : ListAda
     }
 }
 
-class ElectionViewHolder private constructor(private val binding: ElectionViewItemBinding, private val context: Context) :
+class ElectionViewHolder private constructor(private val binding: ElectionViewItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(election: Election) {
@@ -41,7 +40,7 @@ class ElectionViewHolder private constructor(private val binding: ElectionViewIt
             val layoutInflater = LayoutInflater.from(parent.context)
             val binding = ElectionViewItemBinding.inflate(layoutInflater, parent, false)
 
-            return ElectionViewHolder(binding, parent.context)
+            return ElectionViewHolder(binding)
         }
     }
 }

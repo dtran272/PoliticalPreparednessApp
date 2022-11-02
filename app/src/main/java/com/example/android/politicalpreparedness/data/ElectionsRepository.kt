@@ -2,6 +2,7 @@ package com.example.android.politicalpreparedness.data
 
 import com.example.android.politicalpreparedness.data.network.CivicsApi
 import com.example.android.politicalpreparedness.data.network.models.Election
+import com.example.android.politicalpreparedness.data.network.models.VoterInfoResponse
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,14 +21,31 @@ class ElectionsRepository(
                 return@withContext electionsResponse.elections
             } catch (e: Exception) {
                 Timber.e(e)
+                throw e
             }
-            emptyList<Election>()
         }
     }
 
     override suspend fun getSavedElections(): List<Election> {
-        // TODO
+        // TODO: Get saved elections from DB
         return emptyList()
+    }
+
+    override suspend fun getVoterInfo(address: String, electionId: Long): VoterInfoResponse {
+        return withContext(ioDispatcher) {
+            try {
+                val response = CivicsApi.retrofitService.getVoterInfo(address, electionId)
+                return@withContext response
+            } catch (e: Exception) {
+                Timber.e(e)
+                throw e
+            }
+        }
+    }
+
+    override suspend fun checkElectionExist(electionId: Long): Boolean {
+        // TODO: Check election by in DB
+        return false
     }
 
 }
