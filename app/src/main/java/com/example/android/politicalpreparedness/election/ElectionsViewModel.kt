@@ -40,7 +40,6 @@ class ElectionsViewModel(private val electionsRepository: ElectionsRepository) :
         _navigateToSelectedElection.value = null
     }
 
-    //TODO: Create val and functions to populate live data for upcoming elections from the API and saved elections from local database
     private fun getUpcomingElections() {
         _isLoading.value = true
 
