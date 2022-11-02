@@ -28,9 +28,11 @@ class VoterInfoFragment : Fragment() {
 
         val electionId = VoterInfoFragmentArgs.fromBundle(requireArguments()).argElectionId
 
+        val application = requireActivity().applicationContext as PoliticalPreparednessApplication
         val viewModelFactory = VoterInfoViewModelFactory(
-            (requireActivity().applicationContext as PoliticalPreparednessApplication).electionsRepository,
-            electionId = electionId
+            application,
+            application.electionsRepository,
+            electionId
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(VoterInfoViewModel::class.java)
 
