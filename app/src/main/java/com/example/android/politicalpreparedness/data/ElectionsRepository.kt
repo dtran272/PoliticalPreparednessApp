@@ -27,15 +27,15 @@ class ElectionsRepository(
     }
 
     override suspend fun getSavedElections(): List<Election> {
-        // TODO: Get saved elections from DB
-        return emptyList()
+        return withContext(ioDispatcher) {
+            electionsDataSource.getAllElections()
+        }
     }
 
     override suspend fun getVoterInfo(address: String, electionId: Long): VoterInfoResponse {
         return withContext(ioDispatcher) {
             try {
-                val response = CivicsApi.retrofitService.getVoterInfo(address, electionId)
-                return@withContext response
+                return@withContext CivicsApi.retrofitService.getVoterInfo(address, electionId)
             } catch (e: Exception) {
                 Timber.e(e)
                 throw e
@@ -44,8 +44,24 @@ class ElectionsRepository(
     }
 
     override suspend fun checkElectionExist(electionId: Long): Boolean {
-        // TODO: Check election by in DB
-        return false
+        return withContext(ioDispatcher) {
+            val election = electionsDataSource.getElection(electionId)
+
+            election != null
+        }
     }
+
+    override suspend fun saveElection(election: Election) {
+        withContext(ioDispatcher) {
+            electionsDataSource.saveElection(election)
+        }
+    }
+
+    override suspend fun deleteElection(electionId: Long) {
+        withContext(ioDispatcher) {
+            electionsDataSource.deleteElection(electionId)
+        }
+    }
+
 
 }

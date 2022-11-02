@@ -36,7 +36,6 @@ class VoterInfoFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        //TODO: Handle loading of URLs
         viewModel.electionInfoUrl.observe(viewLifecycleOwner, Observer { url ->
             url?.let {
                 configureLoadUrl(binding.electionInfo, it)
@@ -49,8 +48,10 @@ class VoterInfoFragment : Fragment() {
             }
         })
 
-        //TODO: Handle save button UI state
-        //TODO: cont'd Handle save button clicks
+        binding.saveButton.setOnClickListener {
+            viewModel.saveButtonClicked()
+        }
+
         return binding.root
     }
 

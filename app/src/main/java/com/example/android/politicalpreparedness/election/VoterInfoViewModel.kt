@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.data.ElectionsRepository
 import com.example.android.politicalpreparedness.data.network.models.Address
+import com.example.android.politicalpreparedness.data.network.models.VoterInfoResponse
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
 class VoterInfoViewModel(private val electionsRepository: ElectionsRepository, private val electionId: Long) : ViewModel() {
+
+    private var voterInfo: VoterInfoResponse?
 
     private val _electionName = MutableLiveData<String?>()
     val electionName: LiveData<String?>
@@ -37,9 +40,25 @@ class VoterInfoViewModel(private val electionsRepository: ElectionsRepository, p
         get() = _isSaved
 
     init {
+        voterInfo = null
         _isSaved.value = null
+
         checkIfSaved()
         getVoterInfo()
+    }
+
+    fun saveButtonClicked() {
+        viewModelScope.launch {
+            voterInfo?.election?.let { election ->
+                if (_isSaved.value == true) {
+                    electionsRepository.deleteElection(election.id)
+                    _isSaved.value = false
+                } else {
+                    electionsRepository.saveElection(election)
+                    _isSaved.value = true
+                }
+            }
+        }
     }
 
     private fun checkIfSaved() {
@@ -54,26 +73,18 @@ class VoterInfoViewModel(private val electionsRepository: ElectionsRepository, p
                 // TODO: replace static address with reverse geeocoding to address
                 val mockAddress = "9280 Market St. Pikesville, MD 21208"
 
-                val response = electionsRepository.getVoterInfo(mockAddress, electionId)
+                voterInfo = electionsRepository.getVoterInfo(mockAddress, electionId)
 
-                _electionName.value = response.election.name
-                _electionDay.value = response.election.electionDay
-                _electionInfoUrl.value = response.state?.firstOrNull()?.electionAdministrationBody?.electionInfoUrl
-                _ballotInfoUrl.value = response.state?.firstOrNull()?.electionAdministrationBody?.ballotInfoUrl
-                _address.value = response.state?.firstOrNull()?.electionAdministrationBody?.correspondenceAddress
+                voterInfo?.let {
+                    _electionName.value = it.election.name
+                    _electionDay.value = it.election.electionDay
+                    _electionInfoUrl.value = it.state?.firstOrNull()?.electionAdministrationBody?.electionInfoUrl
+                    _ballotInfoUrl.value = it.state?.firstOrNull()?.electionAdministrationBody?.ballotInfoUrl
+                    _address.value = it.state?.firstOrNull()?.electionAdministrationBody?.correspondenceAddress
+                }
             } catch (e: Exception) {
                 Timber.e(e)
             }
         }
     }
-
-    //TODO: Add var and methods to support loading URLs
-
-    //TODO: Add var and methods to save and remove elections to local database
-    //TODO: cont'd -- Populate initial state of save button to reflect proper action based on election saved status
-
-    /**
-     * Hint: The saved state can be accomplished in multiple ways. It is directly related to how elections are saved/removed from the database.
-     */
-
 }

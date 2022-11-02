@@ -12,4 +12,8 @@ interface CivicInfoRepository {
     suspend fun getVoterInfo(address: String, electionId: Long): VoterInfoResponse
 
     suspend fun checkElectionExist(electionId: Long): Boolean
+
+    suspend fun saveElection(election: Election)
+
+    suspend fun deleteElection(id: Long)
 }
