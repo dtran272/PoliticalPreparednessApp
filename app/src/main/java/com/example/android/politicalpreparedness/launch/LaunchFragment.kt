@@ -12,9 +12,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.android.politicalpreparedness.databinding.FragmentLaunchBinding
 import com.google.android.material.snackbar.Snackbar
 
-private const val REQUEST_LOCATION_PERMISSION = 1
-
 class LaunchFragment : Fragment() {
+
+    companion object {
+        const val REQUEST_LOCATION_PERMISSION = 1
+    }
 
     private lateinit var binding: FragmentLaunchBinding
 
