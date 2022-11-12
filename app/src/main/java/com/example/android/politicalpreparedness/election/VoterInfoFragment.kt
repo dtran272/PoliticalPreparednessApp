@@ -27,12 +27,13 @@ class VoterInfoFragment : Fragment() {
         binding.lifecycleOwner = this
 
         val electionId = VoterInfoFragmentArgs.fromBundle(requireArguments()).argElectionId
+        val division = VoterInfoFragmentArgs.fromBundle(requireArguments()).argElectionDivision
 
         val application = requireActivity().applicationContext as PoliticalPreparednessApplication
         val viewModelFactory = VoterInfoViewModelFactory(
-            application,
             application.electionsRepository,
-            electionId
+            electionId,
+            division
         )
         viewModel = ViewModelProvider(this, viewModelFactory).get(VoterInfoViewModel::class.java)
 

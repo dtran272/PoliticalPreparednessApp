@@ -31,6 +31,9 @@
         <argument
             android:name="arg_election_id"
             app:argType="long" />
+        <argument
+            android:name="arg_election_division"
+            app:argType="com.example.android.politicalpreparedness.data.network.models.Division" />
     </fragment>
     <fragment
         android:id="@+id/electionsFragment"

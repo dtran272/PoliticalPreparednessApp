@@ -1,24 +1,25 @@
 package com.example.android.politicalpreparedness.election
 
 import android.annotation.SuppressLint
-import android.app.Application
-import android.location.Geocoder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.data.ElectionsRepository
 import com.example.android.politicalpreparedness.data.network.models.Address
+import com.example.android.politicalpreparedness.data.network.models.Division
 import com.example.android.politicalpreparedness.data.network.models.VoterInfoResponse
-import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.*
 
-private const val DEFAULT_REQUEST_ADDRESS = "9280 Market St. Pikesville, MD 21208"
+//private const val DEFAULT_REQUEST_ADDRESS = "9280 Market St. Pikesville, MD 21208"
 
-class VoterInfoViewModel(private val application: Application, private val electionsRepository: ElectionsRepository, private val electionId: Long) :
-    ViewModel() {
+class VoterInfoViewModel(
+    private val electionsRepository: ElectionsRepository,
+    private val electionId: Long,
+    private val division: Division
+) : ViewModel() {
 
     private var voterInfo: VoterInfoResponse?
 
@@ -77,31 +78,15 @@ class VoterInfoViewModel(private val application: Application, private val elect
     @SuppressLint("MissingPermission")
     private fun initData() {
         viewModelScope.launch {
-            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(application.applicationContext)
-
-            fusedLocationClient.lastLocation?.addOnCompleteListener() { task ->
-                if (task.isSuccessful && task.result != null) {
-                    var currentAddressString = DEFAULT_REQUEST_ADDRESS
-                    val lastLocation = task.result
-
-                    if (lastLocation != null) {
-                        val addressResult = Geocoder(application.applicationContext).getFromLocation(lastLocation.latitude, lastLocation.longitude, 1)
-
-                        addressResult.firstOrNull()?.let {
-                            currentAddressString = it.getAddressLine(0)
-                        }
-                    }
-
-                    getVoterInfo(currentAddressString)
-                }
-            }
+            getVoterInfo()
         }
     }
 
-    private fun getVoterInfo(address: String) {
+    private fun getVoterInfo() {
         viewModelScope.launch {
             try {
-                voterInfo = electionsRepository.getVoterInfo(address, electionId)
+                val addressString = "${division.state}, ${division.country}"
+                voterInfo = electionsRepository.getVoterInfo(addressString, electionId)
 
                 voterInfo?.let {
                     _electionName.value = it.election.name

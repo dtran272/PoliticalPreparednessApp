@@ -1,13 +1,15 @@
 package com.example.android.politicalpreparedness.election
 
-import android.app.Application
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.android.politicalpreparedness.PoliticalPreparednessApplication
 import com.example.android.politicalpreparedness.data.ElectionsRepository
+import com.example.android.politicalpreparedness.data.network.models.Division
 
-class VoterInfoViewModelFactory( private val application: Application, private val electionsRepository: ElectionsRepository, private val electionId: Long) : ViewModelProvider.Factory {
+class VoterInfoViewModelFactory(
+    private val electionsRepository: ElectionsRepository,
+    private val electionId: Long,
+    private val division: Division
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>) =
-        (VoterInfoViewModel(application, electionsRepository, electionId) as T)
+        (VoterInfoViewModel(electionsRepository, electionId, division) as T)
 }
