@@ -17,4 +17,6 @@
     <string name="use_my_location">Use my location</string>
     <string name="my_representatives">My Representatives</string>
     <string name="representative_search">Representative Search</string>
+    <string name="permission_denied_explanation">To use this feature, please grant the location permission to the app.</string>
+    <string name="settings">Settings</string>
 </resources>
