@@ -14,9 +14,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.data.network.models.Address
@@ -31,16 +34,19 @@ class DetailFragment : Fragment() {
     private lateinit var binding: FragmentRepresentativeBinding
     private lateinit var viewModel: RepresentativeViewModel
 
+    private lateinit var spinnerAdapter: ArrayAdapter<String>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         viewModel = ViewModelProvider(this).get(RepresentativeViewModel::class.java)
         binding = FragmentRepresentativeBinding.inflate(inflater)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+
+        setupStateSpinner()
 
         //TODO: Define and assign Representative adapter
 
@@ -50,6 +56,12 @@ class DetailFragment : Fragment() {
         binding.buttonLocation.setOnClickListener {
             if (checkLocationPermissions()) {
                 getLocation()
+            }
+        }
+
+        viewModel.selectedStatePosition.observe(viewLifecycleOwner) { position ->
+            if (position >= 0 && position != binding.state.selectedItemPosition) {
+                binding.state.setSelection(position)
             }
         }
 
@@ -73,6 +85,27 @@ class DetailFragment : Fragment() {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 })
             }.show()
+        }
+    }
+
+    private fun setupStateSpinner() {
+        val statesData = resources.getStringArray(R.array.states)
+
+        viewModel.setStatesArray(statesData)
+
+        spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statesData)
+        binding.state.adapter = spinnerAdapter
+
+        binding.state.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                viewModel.setSelectedStatePosition(position)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
         }
     }
 

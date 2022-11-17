@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:motion="http://schemas.android.com/tools">
 
-    <!-- TODO: Add data binding node -->
     <data>
 
         <variable
@@ -27,7 +26,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- TODO: Add data binding value -->
         <EditText
             android:id="@+id/address_line_1"
             android:layout_width="match_parent"
@@ -39,7 +37,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_title" />
 
-        <!-- TODO: Add data binding value -->
         <EditText
             android:id="@+id/address_line_2"
             android:layout_width="match_parent"
@@ -51,7 +48,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_1" />
 
-        <!-- TODO: Add data binding value -->
         <EditText
             android:id="@+id/city"
             android:layout_width="0dp"
@@ -64,22 +60,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/address_line_2" />
 
-        <!-- TODO: Add default values from provided resources  -->
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <Spinner
             android:id="@+id/state"
+            style="@style/SpinnerStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:autofillHints="postalAddress"
             android:inputType="textPostalAddress"
+            android:selectedItemPosition="@{viewModel.selectedStatePosition}"
             app:layout_constraintBottom_toBottomOf="@id/city"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/city"
             app:layout_constraintTop_toTopOf="@id/city" />
 
-        <!-- TODO: Add data binding value -->
-        <!-- TODO: Add visual styling and content -->
         <EditText
             android:id="@+id/zip"
             android:layout_width="0dp"
@@ -93,7 +86,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/city" />
 
-        <!-- TODO: Add visual styling and label -->
         <Button
             android:id="@+id/button_search"
             style="@style/LargeButton"
@@ -102,7 +94,6 @@
             android:text="@string/find_my_representatives"
             app:layout_constraintTop_toBottomOf="@id/zip" />
 
-        <!-- TODO: Add visual styling and content -->
         <Button
             android:id="@+id/button_location"
             style="@style/LargeButton"
