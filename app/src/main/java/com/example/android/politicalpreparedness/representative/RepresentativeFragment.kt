@@ -140,6 +140,7 @@ class DetailFragment : Fragment() {
             if (task.isSuccessful && task.result != null) {
                 task.result?.let { lastLocation ->
                     viewModel.setMyLocationAddress(geoCodeLocation(lastLocation))
+                    viewModel.getRepresentatives()
                 }
             }
         }
