@@ -1,4 +1,4 @@
-package com.example.android.politicalpreparedness
+package com.example.android.politicalpreparedness.election.adapter
 
 import android.view.View
 import android.widget.TextView

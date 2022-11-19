@@ -16,15 +16,17 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.example.android.politicalpreparedness.BuildConfig
 import com.example.android.politicalpreparedness.R
 import com.example.android.politicalpreparedness.data.network.models.Address
 import com.example.android.politicalpreparedness.databinding.FragmentRepresentativeBinding
 import com.example.android.politicalpreparedness.election.REQUEST_LOCATION_PERMISSION
+import com.example.android.politicalpreparedness.representative.adapter.RepresentativeListAdapter
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
@@ -47,23 +49,26 @@ class DetailFragment : Fragment() {
         binding.viewModel = viewModel
 
         setupStateSpinner()
+        binding.representativesRecyclerView.adapter = RepresentativeListAdapter()
 
-        //TODO: Define and assign Representative adapter
+        binding.buttonSearch.setOnClickListener {
+            viewModel.resetResults()
+            viewModel.searchRepresentatives()
+            hideKeyboard()
+        }
 
-        //TODO: Populate Representative adapter
-
-        //TODO: Establish button listeners for field and location search
         binding.buttonLocation.setOnClickListener {
+            viewModel.resetResults()
+
             if (checkLocationPermissions()) {
                 getLocation()
             }
+            hideKeyboard()
         }
 
-        viewModel.selectedStatePosition.observe(viewLifecycleOwner) { position ->
-            if (position >= 0 && position != binding.state.selectedItemPosition) {
-                binding.state.setSelection(position)
-            }
-        }
+        viewModel.showToast.observe(viewLifecycleOwner, Observer { message ->
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        })
 
         return binding.root
     }
@@ -91,21 +96,18 @@ class DetailFragment : Fragment() {
     private fun setupStateSpinner() {
         val statesData = resources.getStringArray(R.array.states)
 
-        viewModel.setStatesArray(statesData)
-
         spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, statesData)
         binding.state.adapter = spinnerAdapter
 
         binding.state.onItemSelectedListener = object :
             AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                viewModel.setSelectedStatePosition(position)
+                viewModel.setSelectedState(statesData[position])
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 TODO("Not yet implemented")
             }
-
         }
     }
 
@@ -140,7 +142,7 @@ class DetailFragment : Fragment() {
             if (task.isSuccessful && task.result != null) {
                 task.result?.let { lastLocation ->
                     viewModel.setMyLocationAddress(geoCodeLocation(lastLocation))
-                    viewModel.getRepresentatives()
+                    viewModel.searchRepresentatives()
                 }
             }
         }
@@ -159,5 +161,4 @@ class DetailFragment : Fragment() {
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
     }
-
 }

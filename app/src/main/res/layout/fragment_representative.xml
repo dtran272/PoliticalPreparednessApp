@@ -67,11 +67,11 @@
             android:layout_height="0dp"
             android:autofillHints="postalAddress"
             android:inputType="textPostalAddress"
-            android:selectedItemPosition="@{viewModel.selectedStatePosition}"
             app:layout_constraintBottom_toBottomOf="@id/city"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/city"
-            app:layout_constraintTop_toTopOf="@id/city" />
+            app:layout_constraintTop_toTopOf="@id/city"
+            app:stateValue="@{viewModel.state}" />
 
         <EditText
             android:id="@+id/zip"
@@ -114,14 +114,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/representativesRecyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            style="@style/RecyclerViewLayout"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/representative_title"
-            tools:itemCount="4"
+            app:listRepresentatives="@{viewModel.representatives}"
+            tools:itemCount="5"
             tools:listitem="@layout/representative_view_item" />
 
 

@@ -6,77 +6,86 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.android.politicalpreparedness.data.network.CivicsApi
 import com.example.android.politicalpreparedness.data.network.models.Address
+import com.example.android.politicalpreparedness.data.network.models.Office
+import com.example.android.politicalpreparedness.data.network.models.Official
+import com.example.android.politicalpreparedness.representative.model.Representative
+import com.example.android.politicalpreparedness.utils.SingleLiveEvent
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import timber.log.Timber
 
-class RepresentativeViewModel : ViewModel() {
-
-    private var statesArray: Array<String>
-
+class RepresentativeViewModel() : ViewModel() {
     val addressLine1 = MutableLiveData<String>()
     val addressLine2 = MutableLiveData<String>()
     val city = MutableLiveData<String>()
     val zip = MutableLiveData<String>()
 
-    private val _selectedStatePosition = MutableLiveData<Int>()
-    val selectedStatePosition: LiveData<Int>
-        get() = _selectedStatePosition
+    private val _state = MutableLiveData<String>()
+    val state: LiveData<String>
+        get() = _state
+
+    private val _representatives = MutableLiveData<List<Representative>>()
+    val representatives: LiveData<List<Representative>>
+        get() = _representatives
+
+    val showToast: SingleLiveEvent<String> = SingleLiveEvent()
 
     init {
         addressLine1.value = null
         addressLine2.value = null
         city.value = null
         zip.value = null
-        _selectedStatePosition.value = 0
-        statesArray = emptyArray()
+        _state.value = null
+        _representatives.value = emptyList()
     }
 
-    fun setStatesArray(data: Array<String>) {
-        statesArray = data
+    fun resetResults() {
+        _representatives.value = emptyList()
     }
 
-    fun setSelectedStatePosition(position: Int) {
-        _selectedStatePosition.value = position
-    }
+    fun searchRepresentatives() {
+        val address = getAddress()
 
-    //TODO: Create function to fetch representatives from API from a provided address
+        if (address == null) {
+            showToast.value = "Please leave no empty fields."
+            return
+        }
 
-    /**
-     *  The following code will prove helpful in constructing a representative from the API. This code combines the two nodes of the RepresentativeResponse into a single official :
-
-    val (offices, officials) = getRepresentativesDeferred.await()
-    _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
-
-    Note: getRepresentatives in the above code represents the method used to fetch data from the API
-    Note: _representatives in the above code represents the established mutable live data housing representatives
-
-     */
-
-    fun getRepresentatives() {
         viewModelScope.launch {
             try {
-                val response = CivicsApi.retrofitService.getRepresentatives(buildAddress().toFormattedString())
+                val (offices, officials) = getRepresentativesResponse(address.toFormattedString())
 
-                // TODO: Fill up the recycler view with data
+                _representatives.value = offices.flatMap { office -> office.getRepresentatives(officials) }
             } catch (ex: HttpException) {
+                showToast.value = "An error occurred while trying to search. Please check if address is valid."
                 Timber.e(ex.message())
             }
         }
     }
 
-    //TODO: Create function get address from geo location
+    fun setSelectedState(state: String) {
+        _state.value = state
+    }
+
     fun setMyLocationAddress(myAddress: Address) {
         addressLine1.value = myAddress.line1
         addressLine2.value = myAddress.line2
         city.value = myAddress.city
         zip.value = myAddress.zip
-        _selectedStatePosition.value = statesArray.indexOf(myAddress.state)
+        _state.value = myAddress.state
     }
 
-    private fun buildAddress(): Address {
-        val selectedStateIndex = if (_selectedStatePosition.value != -1) _selectedStatePosition.value!! else 0
+    private fun getAddress(): Address? {
+        if (addressLine1.value == null || city.value == null || zip.value == null || _state.value == null) {
+            return null
+        }
 
-        return Address(addressLine1.value!!, addressLine2.value!!, city.value!!, statesArray[selectedStateIndex], zip.value!!)
+        return Address(addressLine1.value!!, addressLine2.value, city.value!!, _state.value!!, zip.value!!)
+    }
+
+    private suspend fun getRepresentativesResponse(addressString: String): Pair<List<Office>, List<Official>> {
+        val response = CivicsApi.retrofitService.getRepresentatives(addressString)
+
+        return Pair(response.offices, response.officials)
     }
 }

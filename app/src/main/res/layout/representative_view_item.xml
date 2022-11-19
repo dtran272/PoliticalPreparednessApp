@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="representative"
+            type="com.example.android.politicalpreparedness.representative.model.Representative" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +16,7 @@
         android:layout_margin="@dimen/small_margin">
 
         <ImageView
-            android:id="@+id/officialImage"
+            android:id="@+id/representativePhoto"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:contentDescription="@string/picture_of_representative"
@@ -21,7 +24,8 @@
             app:layout_constraintEnd_toStartOf="@id/officialGuideline1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/ic_broken_image" />
+            app:profileImage="@{representative.official.photoUrl}"
+            tools:src="@drawable/ic_profile" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/officialGuideline1"
@@ -35,9 +39,10 @@
             style="@style/HeaderLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{representative.office.name}"
             android:textSize="@dimen/header4_size"
             app:layout_constraintStart_toStartOf="@id/officialGuideline1"
-            app:layout_constraintTop_toTopOf="@id/officialImage"
+            app:layout_constraintTop_toTopOf="@id/representativePhoto"
             tools:text="President of the United States" />
 
         <TextView
@@ -45,6 +50,7 @@
             style="@style/HeaderLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{representative.official.name}"
             android:textSize="@dimen/header5_size"
             android:textStyle="normal"
             app:layout_constraintStart_toStartOf="@id/officialGuideline1"
@@ -56,34 +62,35 @@
             style="@style/HeaderLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{representative.official.party}"
             android:textStyle="italic"
-            app:layout_constraintBottom_toBottomOf="@id/officialImage"
+            app:layout_constraintBottom_toBottomOf="@id/representativePhoto"
             app:layout_constraintStart_toStartOf="@id/officialGuideline1"
             app:layout_constraintTop_toBottomOf="@id/officialName"
             tools:text="Democratic Party" />
 
         <ImageView
-            android:id="@+id/websiteLink"
+            android:id="@+id/wwwIcon"
             style="@style/SocialMediaIcon"
             android:layout_marginHorizontal="@dimen/default_margin"
             android:src="@drawable/ic_www"
-            app:layout_constraintBottom_toBottomOf="@id/officialImage"
-            app:layout_constraintEnd_toStartOf="@id/facebookLink" />
+            app:layout_constraintBottom_toBottomOf="@id/representativePhoto"
+            app:layout_constraintEnd_toStartOf="@id/facebookIcon" />
 
         <ImageView
-            android:id="@+id/facebookLink"
+            android:id="@+id/facebookIcon"
             style="@style/SocialMediaIcon"
             android:layout_marginHorizontal="@dimen/default_margin"
             android:src="@drawable/ic_facebook"
-            app:layout_constraintBottom_toBottomOf="@id/officialImage"
-            app:layout_constraintEnd_toStartOf="@id/twitterLink" />
+            app:layout_constraintBottom_toBottomOf="@id/representativePhoto"
+            app:layout_constraintEnd_toStartOf="@id/twitterIcon" />
 
         <ImageView
-            android:id="@+id/twitterLink"
+            android:id="@+id/twitterIcon"
             style="@style/SocialMediaIcon"
             android:layout_marginHorizontal="@dimen/default_margin"
             android:src="@drawable/ic_twitter"
-            app:layout_constraintBottom_toBottomOf="@id/officialImage"
+            app:layout_constraintBottom_toBottomOf="@id/representativePhoto"
             app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
