@@ -24,10 +24,15 @@
         <item name="android:layout_marginStart">@dimen/default_padding</item>
         <item name="android:layout_marginBottom">@dimen/default_margin</item>
     </style>
-    
+
     <style name="RecyclerViewLayout">
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="SocialMediaIcon">
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_width">35dp</item>
     </style>
 
     <style name="SpinnerStyle">

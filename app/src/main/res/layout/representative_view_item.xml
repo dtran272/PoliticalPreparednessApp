@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_margin="@dimen/small_margin">
+
+        <ImageView
+            android:id="@+id/officialImage"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:contentDescription="@string/picture_of_representative"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/officialGuideline1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_broken_image" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/officialGuideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="75dp" />
+
+        <TextView
+            android:id="@+id/officialTitle"
+            style="@style/HeaderLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/header4_size"
+            app:layout_constraintStart_toStartOf="@id/officialGuideline1"
+            app:layout_constraintTop_toTopOf="@id/officialImage"
+            tools:text="President of the United States" />
+
+        <TextView
+            android:id="@+id/officialName"
+            style="@style/HeaderLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/header5_size"
+            android:textStyle="normal"
+            app:layout_constraintStart_toStartOf="@id/officialGuideline1"
+            app:layout_constraintTop_toBottomOf="@id/officialTitle"
+            tools:text="Joseph R. Biden" />
+
+        <TextView
+            android:id="@+id/officialParty"
+            style="@style/HeaderLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="@id/officialImage"
+            app:layout_constraintStart_toStartOf="@id/officialGuideline1"
+            app:layout_constraintTop_toBottomOf="@id/officialName"
+            tools:text="Democratic Party" />
+
+        <ImageView
+            android:id="@+id/websiteLink"
+            style="@style/SocialMediaIcon"
+            android:layout_marginHorizontal="@dimen/default_margin"
+            android:src="@drawable/ic_www"
+            app:layout_constraintBottom_toBottomOf="@id/officialImage"
+            app:layout_constraintEnd_toStartOf="@id/facebookLink" />
+
+        <ImageView
+            android:id="@+id/facebookLink"
+            style="@style/SocialMediaIcon"
+            android:layout_marginHorizontal="@dimen/default_margin"
+            android:src="@drawable/ic_facebook"
+            app:layout_constraintBottom_toBottomOf="@id/officialImage"
+            app:layout_constraintEnd_toStartOf="@id/twitterLink" />
+
+        <ImageView
+            android:id="@+id/twitterLink"
+            style="@style/SocialMediaIcon"
+            android:layout_marginHorizontal="@dimen/default_margin"
+            android:src="@drawable/ic_twitter"
+            app:layout_constraintBottom_toBottomOf="@id/officialImage"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
