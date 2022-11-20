@@ -3,6 +3,7 @@ package com.example.android.politicalpreparedness.representative.adapter
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Spinner
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -41,6 +42,13 @@ fun Spinner.setNewValue(value: String?) {
     if (position >= 0) {
         setSelection(position)
     }
+}
+
+@BindingAdapter("enableMotion")
+fun enableMotionScene(layout: MotionLayout, repData: List<Representative>?) {
+    val enable = !repData.isNullOrEmpty()
+
+    layout.getTransition(R.id.representativeListTransition).setEnable(enable)
 }
 
 inline fun <reified T> toTypedAdapter(adapter: ArrayAdapter<*>): ArrayAdapter<T> {

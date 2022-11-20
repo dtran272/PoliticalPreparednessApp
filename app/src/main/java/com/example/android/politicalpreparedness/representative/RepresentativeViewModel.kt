@@ -76,11 +76,17 @@ class RepresentativeViewModel() : ViewModel() {
     }
 
     private fun getAddress(): Address? {
-        if (addressLine1.value == null || city.value == null || zip.value == null || _state.value == null) {
+        if (addressLine1.value.isNullOrEmpty() || city.value.isNullOrEmpty() || zip.value.isNullOrEmpty() || _state.value.isNullOrEmpty()) {
             return null
         }
 
-        return Address(addressLine1.value!!, addressLine2.value, city.value!!, _state.value!!, zip.value!!)
+        return Address(
+            addressLine1.value.toString(),
+            addressLine2.value.toString(),
+            city.value.toString(),
+            _state.value.toString(),
+            zip.value.toString()
+        )
     }
 
     private suspend fun getRepresentativesResponse(addressString: String): Pair<List<Office>, List<Official>> {
